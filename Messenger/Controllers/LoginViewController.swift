@@ -128,12 +128,16 @@ class LoginViewController: UIViewController {
         }
         
         //Firebase Login
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+        Auth.auth().signIn(withEmail: email, password: password) {[weak self] authResult, error in
+            guard let self else {
+                return
+            }
             guard let result = authResult,error == nil else {
                 print("Error in signing the user in:\(String(describing: error?.localizedDescription))")
                 return
             }
-            print("signed in user:\(result.user)")
+            print("Logged in user:\(result.user)")
+            self.navigationController?.dismiss(animated: true)
         }
     }
     

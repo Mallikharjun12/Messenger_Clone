@@ -183,20 +183,35 @@ class RegisterViewController: UIViewController {
             return
         }
         
-        //Firebase Register
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            guard let result = authResult, error == nil else {
-                print("Error in creating user:\(String(describing: error?.localizedDescription))")
+        DatabaseManager.shared.userexists(with: email) {[weak self] exists in
+            guard let self else {
+                return
+            }
+            guard !exists else {
+                self.alertUserLoginError(message: "Looks like an user exists with email:\(email)")
                 return
             }
             
-            print("user is:\(result.user)")
+            //Firebase Register
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                guard let result = authResult, error == nil else {
+                    print("Error in creating user:\(String(describing: error?.localizedDescription))")
+                    return
+                }
+
+                print("created user is:\(result.user)")
+                DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
+                                                                    lastName: lastName,
+                                                                    emailAddress: email))
+                
+                self.navigationController?.dismiss(animated: true)
+            }
         }
     }
     
-    func alertUserLoginError() {
+    func alertUserLoginError(message:String = "Please enter all information to create a New account") {
         let alert = UIAlertController(title: "Oops",
-                                      message: "Please enter all information to create a New account",
+                                      message: message,
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
         present(alert, animated: true)

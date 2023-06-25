@@ -24,6 +24,7 @@
 		AD5882442A480C71000871A7 /* dummyVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882432A480C71000871A7 /* dummyVM.swift */; };
 		AD5882462A482333000871A7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882452A482333000871A7 /* Extensions.swift */; };
 		AD5882482A48613C000871A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AD5882472A48613C000871A7 /* GoogleService-Info.plist */; };
+		AD58824A2A48ACB3000871A7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882492A48ACB2000871A7 /* DatabaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		AD5882432A480C71000871A7 /* dummyVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummyVM.swift; sourceTree = "<group>"; };
 		AD5882452A482333000871A7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AD5882472A48613C000871A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AD5882492A48ACB2000871A7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		B8C9CACC953524704F600433 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
 		F347579C0CCF62B2AF4815DE /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,6 +150,7 @@
 				AD58821B2A48096D000871A7 /* AppDelegate.swift */,
 				AD58821D2A48096D000871A7 /* SceneDelegate.swift */,
 				AD5882452A482333000871A7 /* Extensions.swift */,
+				AD5882492A48ACB2000871A7 /* DatabaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			files = (
 				AD5882362A480B9F000871A7 /* LoginViewController.swift in Sources */,
 				AD5882382A480BD0000871A7 /* RegisterViewController.swift in Sources */,
+				AD58824A2A48ACB3000871A7 /* DatabaseManager.swift in Sources */,
 				AD5882422A480C64000871A7 /* dummyModel.swift in Sources */,
 				AD5882202A48096D000871A7 /* ConversationsViewController.swift in Sources */,
 				AD5882402A480C33000871A7 /* NewCoversationViewController.swift in Sources */,
