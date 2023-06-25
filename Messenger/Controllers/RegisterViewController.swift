@@ -7,6 +7,7 @@
 
 import UIKit
 import PhotosUI
+import FirebaseAuth
 
 class RegisterViewController: UIViewController {
 
@@ -182,8 +183,15 @@ class RegisterViewController: UIViewController {
             return
         }
         
-        print("Register tapped")
         //Firebase Register
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            guard let result = authResult, error == nil else {
+                print("Error in creating user:\(String(describing: error?.localizedDescription))")
+                return
+            }
+            
+            print("user is:\(result.user)")
+        }
     }
     
     func alertUserLoginError() {
