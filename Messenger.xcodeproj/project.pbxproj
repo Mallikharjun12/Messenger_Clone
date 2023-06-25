@@ -21,6 +21,7 @@
 		AD5882402A480C33000871A7 /* NewCoversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD58823F2A480C33000871A7 /* NewCoversationViewController.swift */; };
 		AD5882422A480C64000871A7 /* dummyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882412A480C64000871A7 /* dummyModel.swift */; };
 		AD5882442A480C71000871A7 /* dummyVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882432A480C71000871A7 /* dummyVM.swift */; };
+		AD5882462A482333000871A7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882452A482333000871A7 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		AD58823F2A480C33000871A7 /* NewCoversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoversationViewController.swift; sourceTree = "<group>"; };
 		AD5882412A480C64000871A7 /* dummyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummyModel.swift; sourceTree = "<group>"; };
 		AD5882432A480C71000871A7 /* dummyVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummyVM.swift; sourceTree = "<group>"; };
+		AD5882452A482333000871A7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 			children = (
 				AD58821B2A48096D000871A7 /* AppDelegate.swift */,
 				AD58821D2A48096D000871A7 /* SceneDelegate.swift */,
+				AD5882452A482333000871A7 /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				AD5882402A480C33000871A7 /* NewCoversationViewController.swift in Sources */,
 				AD58823C2A480BFD000871A7 /* VideoPlayerViewController.swift in Sources */,
 				AD5882442A480C71000871A7 /* dummyVM.swift in Sources */,
+				AD5882462A482333000871A7 /* Extensions.swift in Sources */,
 				AD58821C2A48096D000871A7 /* AppDelegate.swift in Sources */,
 				AD58821E2A48096D000871A7 /* SceneDelegate.swift in Sources */,
 				AD58823E2A480C09000871A7 /* ProfileViewController.swift in Sources */,
