@@ -224,9 +224,44 @@ extension LoginViewController {
              DatabaseManager.shared.userexists(with: email ) { exists in
                  if !exists {
                      //insert user to database
-                     DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
-                                                                         lastName: lastName,
-                                                                         emailAddress: email))
+                     let chatUser = ChatAppUser(firstName: firstName,
+                                                lastName: lastName,
+                                                emailAddress: email)
+                     DatabaseManager.shared.insertUser(with: chatUser) { success in
+                         if success {
+                             
+                             guard let hasImage = result.user.profile?.hasImage else {
+                                 return
+                             }
+                             
+                             if hasImage {
+                                 guard let profileImageUrl = result.user.profile?.imageURL(withDimension: 200) else {
+                                     print("Failed to get google profile image url")
+                                     return
+                                 }
+                                 
+                                 print("Downloading data from google")
+                                 
+                                 URLSession.shared.dataTask(with: profileImageUrl) { data, _, _ in
+                                     guard let data = data else {
+                                         print("Failed to get data from google")
+                                         return
+                                     }
+                                     //upload Image
+                                     let fileName = chatUser.profilePictureFileName
+                                     StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
+                                         switch result {
+                                         case .success(let downloadUrl):
+                                             UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                             print("url is:-  \(downloadUrl)")
+                                         case .failure(let error):
+                                             print(error.localizedDescription)
+                                         }
+                                     }
+                                 }.resume()
+                             }
+                         }
+                     }
                  }
              }
              

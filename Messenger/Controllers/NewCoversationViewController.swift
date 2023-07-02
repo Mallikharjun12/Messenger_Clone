@@ -38,6 +38,7 @@ class NewCoversationViewController: UIViewController {
         searchBar.delegate = self
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.topItem?.titleView = searchBar
+        navigationItem.hidesBackButton = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
                                                            action: #selector(didTapClose))
