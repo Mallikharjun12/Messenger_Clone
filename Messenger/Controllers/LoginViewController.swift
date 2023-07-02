@@ -7,6 +7,8 @@
 
 import UIKit
 import FirebaseAuth
+import GoogleSignIn
+import Firebase
 
 class LoginViewController: UIViewController {
 
@@ -65,6 +67,12 @@ class LoginViewController: UIViewController {
         return btn
     }()
     
+    private let googleSignInButton:GIDSignInButton = {
+        let btn = GIDSignInButton()
+        btn.layer.cornerRadius = 12
+        return btn
+    }()
+    
     //MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +87,8 @@ class LoginViewController: UIViewController {
         
         //Add subviews
         view.addSubview(scrollView)
-        scrollView.addSubviews(imageView,emailField,passwordField,loginButton)
+        scrollView.addSubviews(imageView,emailField,passwordField,loginButton,googleSignInButton)
+        googleSignInButton.addTarget(self, action: #selector(didTapGoogleSignIn), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
@@ -100,6 +109,10 @@ class LoginViewController: UIViewController {
                                      height: 52)
         loginButton.frame = CGRect(x: 30,
                                    y: passwordField.bottom+12,
+                                   width: scrollView.width-60,
+                                   height: 52)
+        googleSignInButton.frame = CGRect(x: 30,
+                                   y: loginButton.bottom+12,
                                    width: scrollView.width-60,
                                    height: 52)
     }
@@ -168,5 +181,60 @@ extension LoginViewController:UITextFieldDelegate {
             loginButtonTapped()
         }
         return true
+    }
+}
+
+//MARK: Google Signin
+extension LoginViewController {
+    
+     @objc private func didTapGoogleSignIn() {
+         
+         guard let clientID = FirebaseApp.app()?.options.clientID else {
+             return
+         }
+         
+         //Google signin configuration object
+         let config = GIDConfiguration(clientID: clientID)
+         GIDSignIn.sharedInstance.configuration = config
+         
+         GIDSignIn.sharedInstance.signIn(withPresenting: self) { result, error in
+             guard let result = result,error == nil else {
+                 print("Error in signing in with google:\(String(describing: error?.localizedDescription))")
+                 return
+             }
+             print("Signed in user with Google:\(result.user)")
+             
+             
+             guard let email = result.user.profile?.email,
+                   let firstName = result.user.profile?.givenName,
+                   let lastName = result.user.profile?.familyName else {
+                 return
+             }
+             
+             DatabaseManager.shared.userexists(with: email ) { exists in
+                 if !exists {
+                     //insert user to database
+                     DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
+                                                                         lastName: lastName,
+                                                                         emailAddress: email))
+                 }
+             }
+             
+             guard let idToken = result.user.idToken?.tokenString else {
+                 return
+             }
+             
+             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                            accessToken: result.user.accessToken.tokenString)
+             
+             Auth.auth().signIn(with: credential) { authResult, error in
+                 guard authResult != nil, error == nil else {
+                     print("Failed to Login with google credential-\(error)")
+                     return
+                 }
+                 print("successfully signed in with Google Credential-\(result.user.profile?.email ?? "")")
+                 self.navigationController?.dismiss(animated: true)
+             }
+         }
     }
 }
