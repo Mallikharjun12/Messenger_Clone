@@ -37,6 +37,19 @@ final class StorageManager {
             completion(.success(urlString))
         }
     }
+    
+    
+    public func downloadURL(for path:String, completion:@escaping (Result<URL,Error>) -> Void ) {
+        let reference = self.storage.child(path)
+        
+        reference.downloadURL { url, error in
+            guard let url = url ,error == nil else {
+                completion(.failure(StorageErrors.failedToGetDownloadUrl))
+                return
+            }
+            completion(.success(url))
+        }
+    }
 }
 
 enum StorageErrors:Error {

@@ -14,6 +14,11 @@ final class DatabaseManager {
     
     private let database = Database.database().reference()
     
+    static func safeEmail(emailAddress:String) -> String {
+        let safeEmail = emailAddress.replacingOccurrences(of: ".", with: "_")
+        return safeEmail.replacingOccurrences(of: "@", with: "_")
+    }
+    
 }
 
 //MARK: Account Managemnt
@@ -43,9 +48,59 @@ extension DatabaseManager {
                 completion(false)
                 return
             }
-            completion(true)
+            
+            self.database.child("users").observeSingleEvent(of: .value) { snapShot in
+                
+                if var usersCollection = snapShot.value as? [[String:String]] {
+                    //append to the usersCollection
+                    usersCollection.append([
+                        "name":user.firstName + " " + user.lastName,
+                        "email":user.safeEmail
+                       ])
+                    self.database.child("users").setValue(usersCollection) { error, _ in
+                        guard error == nil else {
+                            completion(false)
+                            return
+                        }
+                        completion(true)
+                    }
+                    
+                } else {
+                    // create the users collection and then append
+                    
+                    let newCollection:[[String:String]] = [
+                       [
+                        "name":user.firstName + " " + user.lastName,
+                        "email":user.safeEmail
+                       ]
+                    ]
+                    self.database.child("users").setValue(newCollection) { error, _ in
+                        guard error == nil else {
+                            completion(false)
+                            return
+                        }
+                        completion(true)
+                    }
+                }
+            }
+            
         }
     }
+    
+    public func getAllUsers(completion:@escaping (Result<[[String:String]],Error>)->Void) {
+        database.child("users").observeSingleEvent(of: .value) { snapShot in
+            guard let users = snapShot.value as? [[String:String]] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            completion(.success(users))
+        }
+    }
+}
+
+
+enum DatabaseError:Error {
+    case failedToFetch
 }
 
 struct ChatAppUser {
@@ -62,3 +117,20 @@ struct ChatAppUser {
         return "\(safeEmail)_profile_picture.png"
     }
 }
+
+/*
+   users => [
+ 
+                 [
+                 "name":
+                 "safe_email"
+                 ],
+                 
+                 [
+                 "name":
+                 "safe_email"
+                 ]
+ 
+            ]
+ 
+ */

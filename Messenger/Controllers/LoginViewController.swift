@@ -160,6 +160,7 @@ class LoginViewController: UIViewController {
                 return
             }
             print("Logged in user:\(result.user)")
+            UserDefaults.standard.set(email, forKey: "email")
             self.navigationController?.dismiss(animated: true)
         }
     }
@@ -242,9 +243,9 @@ extension LoginViewController {
                                  
                                  print("Downloading data from google")
                                  
-                                 URLSession.shared.dataTask(with: profileImageUrl) { data, _, _ in
+                                 URLSession.shared.dataTask(with: profileImageUrl) { data, _, error in
                                      guard let data = data else {
-                                         print("Failed to get data from google")
+                                         print("Failed to get data from google-\(error?.localizedDescription)")
                                          return
                                      }
                                      //upload Image
@@ -278,6 +279,7 @@ extension LoginViewController {
                      return
                  }
                  print("successfully signed in with Google Credential-\(result.user.profile?.email ?? "")")
+                 UserDefaults.standard.set(email, forKey: "email")
                  self.navigationController?.dismiss(animated: true)
              }
          }
