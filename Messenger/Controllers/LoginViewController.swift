@@ -178,6 +178,9 @@ class LoginViewController: UIViewController {
             }
             
             UserDefaults.standard.set(email, forKey: "email")
+            
+            NotificationCenter.default.post(name: .didLogInNotification, object: self)
+            
             self.navigationController?.dismiss(animated: true)
         }
     }
@@ -232,6 +235,7 @@ extension LoginViewController {
              }
              print("Signed in user with Google:\(result.user)")
              
+             NotificationCenter.default.post(name: .didLogInNotification, object: self)
              
              guard let email = result.user.profile?.email,
                    let firstName = result.user.profile?.givenName,

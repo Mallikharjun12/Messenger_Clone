@@ -10,12 +10,12 @@ import JGProgressHUD
 
 class NewCoversationViewController: UIViewController {
 
-    public var completion:(([String:String]) -> ())?
+    public var completion:((SearchResult) -> ())?
     
     private let spinner = JGProgressHUD(style: .dark)
     
     private var users = [[String:String]]()
-    private var results = [[String:String]]()
+    private var results = [SearchResult]()
     
     private var hasFetched = false
     
@@ -29,6 +29,7 @@ class NewCoversationViewController: UIViewController {
         let table = UITableView()
         table.isHidden = true
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.register(NewConversationCell.self, forCellReuseIdentifier: NewConversationCell.identidier)
         return table
     }()
     
@@ -80,8 +81,8 @@ extension NewCoversationViewController:UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = results[indexPath.row]["name"]
+        let cell = tableView.dequeueReusableCell(withIdentifier: NewConversationCell.identidier, for: indexPath) as! NewConversationCell
+        cell.configure(with: results[indexPath.row])
         return cell
     }
     
@@ -134,17 +135,31 @@ extension NewCoversationViewController:UISearchBarDelegate {
     }
     
     func filterUsers(with term:String) {
-        guard hasFetched else {
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String, hasFetched else {
             return
         }
         
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
+        
         spinner.dismiss(animated: true)
-        var results:[[String:String]] = self.users.filter({
+        let results:[SearchResult] = self.users.filter({
+            
+            guard let email = $0["email"], email != safeEmail else {
+                return false
+            }
+            
             guard let name = $0["name"]?.lowercased() else {
                 return false
             }
             return name.hasPrefix(term.lowercased())
+        }).compactMap({
+            guard let name = $0["name"],
+                  let email = $0["email"] else {
+                return nil
+            }
+            return SearchResult(name: name, email: email)
         })
+        
         self.results = results
         
         if self.results.isEmpty {
@@ -157,4 +172,10 @@ extension NewCoversationViewController:UISearchBarDelegate {
         }
     }
     
+}
+
+
+struct SearchResult {
+    let name:String
+    let email:String
 }
