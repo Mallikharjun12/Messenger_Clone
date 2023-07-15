@@ -45,6 +45,7 @@ class RegisterViewController: UIViewController {
         field.leftViewMode = .always
         field.returnKeyType = .continue
         field.clearButtonMode = .whileEditing
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -60,6 +61,7 @@ class RegisterViewController: UIViewController {
         field.leftViewMode = .always
         field.returnKeyType = .continue
         field.clearButtonMode = .whileEditing
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -75,6 +77,7 @@ class RegisterViewController: UIViewController {
         field.leftViewMode = .always
         field.returnKeyType = .continue
         field.clearButtonMode = .whileEditing
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -91,6 +94,7 @@ class RegisterViewController: UIViewController {
         field.returnKeyType = .done
         field.isSecureTextEntry = true
         field.clearButtonMode = .whileEditing
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     

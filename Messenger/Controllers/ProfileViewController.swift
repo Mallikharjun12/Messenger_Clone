@@ -8,16 +8,37 @@
 import UIKit
 import FirebaseAuth
 import GoogleSignIn
+import SDWebImage
+
+enum ProfileViewModelType {
+    case info, logOut
+}
+
+struct ProfileViewModel {
+    let viewModelType:ProfileViewModelType
+    let title:String
+    let handler: (() -> ())?
+}
 
 class ProfileViewController: UIViewController {
 
     @IBOutlet weak var tableView:UITableView!
     
-    let data = ["Log Out"]
+    var data = [ProfileViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
+        data.append(ProfileViewModel(viewModelType: .info,
+                                     title: "Name:\(UserDefaults.standard.value(forKey: "name") as? String ?? "NA")",
+                                     handler: nil))
+        data.append(ProfileViewModel(viewModelType: .info,
+                                     title: "Email:\(UserDefaults.standard.value(forKey: "email") as? String ?? "NA")",
+                                     handler: nil))
+        data.append(ProfileViewModel(viewModelType: .logOut, title: "Log Out", handler: { [weak self] in
+            self?.logOutAction()
+        }))
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
@@ -48,10 +69,10 @@ class ProfileViewController: UIViewController {
         imageView.layer.masksToBounds = true
         headerView.addSubview(imageView)
         
-        StorageManager.shared.downloadURL(for: path) {[weak self] result in
+        StorageManager.shared.downloadURL(for: path) { result in
             switch result {
             case .success(let url):
-                self?.downloadImage(imageView: imageView, url: url)
+                imageView.sd_setImage(with: url, completed: nil)
             case .failure(let error):
                 print("Failed to get url for profile:\(error.localizedDescription)")
             }
@@ -60,17 +81,6 @@ class ProfileViewController: UIViewController {
         return headerView
     }
 
-    
-    func downloadImage(imageView:UIImageView, url:URL) {
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            guard let data = data,error == nil else {
-                return
-            }
-            DispatchQueue.main.async {
-                imageView.image = UIImage(data: data)
-            }
-        }.resume()
-    }
 }
 
 //MARK: TableView
@@ -81,16 +91,18 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell",for: indexPath)
-        cell.textLabel?.text = data[indexPath.row]
-        cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = .systemRed
+        let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier,for: indexPath) as! ProfileTableViewCell
+        cell.setUp(with: data[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        data[indexPath.row].handler?()
         
+    }
+    
+    private func logOutAction() {
         let sheet = UIAlertController(title: "Hey", message: "Are you sure you want to Log Out?", preferredStyle: .actionSheet)
         
         sheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: {[weak self] _ in
@@ -115,6 +127,22 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource {
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(sheet, animated: true)
         
-        
+    }
+}
+
+
+class ProfileTableViewCell:UITableViewCell {
+    static let identifier = "ProfileTableViewCell"
+    
+    func setUp(with viewModel:ProfileViewModel) {
+        self.textLabel?.text = viewModel.title
+        switch viewModel.viewModelType {
+        case .info:
+            self.textLabel?.textAlignment = .left
+            selectionStyle = .none
+        case .logOut:
+            self.textLabel?.textAlignment = .center
+            self.textLabel?.textColor = .systemRed
+        }
     }
 }

@@ -41,6 +41,7 @@ class LoginViewController: UIViewController {
         field.leftViewMode = .always
         field.returnKeyType = .continue
         field.clearButtonMode = .whileEditing
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -57,6 +58,7 @@ class LoginViewController: UIViewController {
         field.returnKeyType = .done
         field.isSecureTextEntry = true
         field.clearButtonMode = .whileEditing
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
