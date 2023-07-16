@@ -21,3 +21,9 @@ struct ChatAppUser {
         return "\(safeEmail)_profile_picture.png"
     }
 }
+
+
+struct SearchResult {
+    let name:String
+    let email:String
+}

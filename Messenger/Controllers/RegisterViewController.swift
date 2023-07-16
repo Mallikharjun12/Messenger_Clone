@@ -10,7 +10,7 @@ import PhotosUI
 import FirebaseAuth
 import JGProgressHUD
 
-class RegisterViewController: UIViewController {
+final class RegisterViewController: UIViewController {
 
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -213,6 +213,9 @@ class RegisterViewController: UIViewController {
                     return
                 }
 
+                UserDefaults.standard.set(email, forKey: "email")
+                UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                
                 print("created user is:\(result.user)")
                 let chatUser = ChatAppUser(firstName: firstName,
                                            lastName: lastName,

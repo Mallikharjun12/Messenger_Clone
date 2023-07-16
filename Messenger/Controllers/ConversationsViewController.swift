@@ -9,20 +9,9 @@ import UIKit
 import FirebaseAuth
 import JGProgressHUD
 
-struct Conversation {
-    let id:String
-    let name:String
-    let otherUserEmail:String
-    let latestMessage:LatestMessage
-}
 
-struct LatestMessage {
-    let date:String
-    let text:String
-    let isRead:Bool
-}
-
-class ConversationsViewController: UIViewController {
+/// Controller that shows a list of conversations for a user
+final class ConversationsViewController: UIViewController {
 
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -57,7 +46,6 @@ class ConversationsViewController: UIViewController {
         
         view.addSubviews(tableView,noConversationsLabel)
         setUpTableView()
-        fetchConversations()
         startListeningForConversations()
         
         loginObserver = NotificationCenter.default.addObserver(forName: Notification.Name.didLogInNotification, object: nil, queue: .main, using: {[weak self] _ in
@@ -80,10 +68,14 @@ class ConversationsViewController: UIViewController {
             switch result {
             case .success(let conversations):
                 guard !conversations.isEmpty else {
+                    self?.tableView.isHidden = true
+                    self?.noConversationsLabel.isHidden = false
                     return
                 }
                 self?.conversations = conversations
                 print("Coversations:\(conversations)")
+                self?.tableView.isHidden = false
+                self?.noConversationsLabel.isHidden = true
                 
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
@@ -91,6 +83,8 @@ class ConversationsViewController: UIViewController {
                 
             case .failure(let error):
                 print("Failed to get conversations:\(error)")
+                self?.tableView.isHidden = true
+                self?.noConversationsLabel.isHidden = false
             }
         }
     }
@@ -158,6 +152,7 @@ class ConversationsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        noConversationsLabel.frame = CGRect(x: 10, y: view.center.y, width: view.width-20, height: 30)
     }
     
     private func validateAuth() {
@@ -175,32 +170,29 @@ class ConversationsViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    private func fetchConversations() {
-        tableView.isHidden = false
-    }
 }
 
 
 extension ConversationsViewController:UITableViewDelegate,UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.conversations.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.conversations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ConversationTableViewCell.identidier, for: indexPath) as! ConversationTableViewCell
-        let model = conversations[indexPath.section]
+        let model = conversations[indexPath.row]
         cell.configure(with: model)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let model = conversations[indexPath.section]
+        let model = conversations[indexPath.row]
         openConversation(model)
     }
     
@@ -217,19 +209,18 @@ extension ConversationsViewController:UITableViewDelegate,UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        let conversationId = conversations[indexPath.section].id
+        let conversationId = conversations[indexPath.row].id
         
         if editingStyle == .delete {
             tableView.beginUpdates()
-            
-            DatabaseManager.shared.deleteConversation(conversationId: conversationId) {[weak self] done in
-                if done {
-                    self?.conversations.remove(at: indexPath.section)
-                    tableView.deleteSections(IndexSet(integer: indexPath.section), with: .left)
-                    tableView.endUpdates()
+            self.conversations.remove(at: indexPath.section)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            DatabaseManager.shared.deleteConversation(conversationId: conversationId) { done in
+                if !done {
+                    print("failed to delete")
                 }
             }
-            
+            tableView.endUpdates()
             
         }
     }

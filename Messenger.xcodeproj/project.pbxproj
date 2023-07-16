@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		95CB7D5CB74658F480F97DB0 /* Pods_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D65CEDCD28A37ACECEE19C2F /* Pods_Messenger.framework */; };
 		AD17E1A02A62AD4F00422FFD /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17E19F2A62AD4F00422FFD /* LocationPickerViewController.swift */; };
+		AD17E1A32A63FA4500422FFD /* ConversationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17E1A22A63FA4500422FFD /* ConversationModel.swift */; };
+		AD17E1A52A63FAE400422FFD /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17E1A42A63FAE400422FFD /* ChatModels.swift */; };
+		AD17E1A72A63FB8600422FFD /* ProfileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17E1A62A63FB8600422FFD /* ProfileModels.swift */; };
 		AD1F17AD2A572E8600E77CCE /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1F17AC2A572E8600E77CCE /* ConversationTableViewCell.swift */; };
 		AD2E920E2A5ABA2500FDEBA1 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2E920D2A5ABA2500FDEBA1 /* NewConversationCell.swift */; };
 		AD58821C2A48096D000871A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD58821B2A48096D000871A7 /* AppDelegate.swift */; };
@@ -20,7 +23,6 @@
 		AD5882362A480B9F000871A7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882352A480B9F000871A7 /* LoginViewController.swift */; };
 		AD5882382A480BD0000871A7 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882372A480BD0000871A7 /* RegisterViewController.swift */; };
 		AD58823A2A480BDF000871A7 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882392A480BDF000871A7 /* PhotoViewerViewController.swift */; };
-		AD58823C2A480BFD000871A7 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD58823B2A480BFD000871A7 /* VideoPlayerViewController.swift */; };
 		AD58823E2A480C09000871A7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD58823D2A480C09000871A7 /* ProfileViewController.swift */; };
 		AD5882402A480C33000871A7 /* NewCoversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD58823F2A480C33000871A7 /* NewCoversationViewController.swift */; };
 		AD5882422A480C64000871A7 /* ChatAppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5882412A480C64000871A7 /* ChatAppUser.swift */; };
@@ -36,6 +38,9 @@
 		3E83EDA5FAEE01C95340A5DD /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 		9EFB401DAF036645195D5A6B /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
 		AD17E19F2A62AD4F00422FFD /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
+		AD17E1A22A63FA4500422FFD /* ConversationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationModel.swift; sourceTree = "<group>"; };
+		AD17E1A42A63FAE400422FFD /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
+		AD17E1A62A63FB8600422FFD /* ProfileModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModels.swift; sourceTree = "<group>"; };
 		AD1F17AC2A572E8600E77CCE /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		AD2E920D2A5ABA2500FDEBA1 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		AD5882182A48096D000871A7 /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,7 +54,6 @@
 		AD5882352A480B9F000871A7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		AD5882372A480BD0000871A7 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		AD5882392A480BDF000871A7 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
-		AD58823B2A480BFD000871A7 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		AD58823D2A480C09000871A7 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		AD58823F2A480C33000871A7 /* NewCoversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoversationViewController.swift; sourceTree = "<group>"; };
 		AD5882412A480C64000871A7 /* ChatAppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppUser.swift; sourceTree = "<group>"; };
@@ -130,7 +134,6 @@
 				AD5882352A480B9F000871A7 /* LoginViewController.swift */,
 				AD5882372A480BD0000871A7 /* RegisterViewController.swift */,
 				AD5882392A480BDF000871A7 /* PhotoViewerViewController.swift */,
-				AD58823B2A480BFD000871A7 /* VideoPlayerViewController.swift */,
 				AD58823D2A480C09000871A7 /* ProfileViewController.swift */,
 				AD58823F2A480C33000871A7 /* NewCoversationViewController.swift */,
 				ADB43FEF2A51C12300963B7D /* ChatViewController.swift */,
@@ -154,6 +157,9 @@
 			isa = PBXGroup;
 			children = (
 				AD5882412A480C64000871A7 /* ChatAppUser.swift */,
+				AD17E1A22A63FA4500422FFD /* ConversationModel.swift */,
+				AD17E1A42A63FAE400422FFD /* ChatModels.swift */,
+				AD17E1A62A63FB8600422FFD /* ProfileModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -306,19 +312,21 @@
 				AD5882362A480B9F000871A7 /* LoginViewController.swift in Sources */,
 				AD17E1A02A62AD4F00422FFD /* LocationPickerViewController.swift in Sources */,
 				AD5882382A480BD0000871A7 /* RegisterViewController.swift in Sources */,
+				AD17E1A72A63FB8600422FFD /* ProfileModels.swift in Sources */,
 				AD58824A2A48ACB3000871A7 /* DatabaseManager.swift in Sources */,
 				AD5882422A480C64000871A7 /* ChatAppUser.swift in Sources */,
 				AD5882202A48096D000871A7 /* ConversationsViewController.swift in Sources */,
 				AD5882402A480C33000871A7 /* NewCoversationViewController.swift in Sources */,
-				AD58823C2A480BFD000871A7 /* VideoPlayerViewController.swift in Sources */,
 				AD5882442A480C71000871A7 /* dummyVM.swift in Sources */,
 				AD1F17AD2A572E8600E77CCE /* ConversationTableViewCell.swift in Sources */,
 				AD5882462A482333000871A7 /* Extensions.swift in Sources */,
+				AD17E1A52A63FAE400422FFD /* ChatModels.swift in Sources */,
 				AD58821C2A48096D000871A7 /* AppDelegate.swift in Sources */,
 				ADB43FF02A51C12300963B7D /* ChatViewController.swift in Sources */,
 				AD58821E2A48096D000871A7 /* SceneDelegate.swift in Sources */,
 				ADB43FF22A51E1DC00963B7D /* StorageManager.swift in Sources */,
 				AD58823E2A480C09000871A7 /* ProfileViewController.swift in Sources */,
+				AD17E1A32A63FA4500422FFD /* ConversationModel.swift in Sources */,
 				AD58823A2A480BDF000871A7 /* PhotoViewerViewController.swift in Sources */,
 				AD2E920E2A5ABA2500FDEBA1 /* NewConversationCell.swift in Sources */,
 			);

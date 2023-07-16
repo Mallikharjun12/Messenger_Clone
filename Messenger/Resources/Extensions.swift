@@ -10,19 +10,19 @@ import UIKit
 extension UIView {
     
     var width:CGFloat {
-        return self.frame.size.width
+        return frame.size.width
     }
     
     var height:CGFloat {
-        return self.frame.size.height
+        return frame.size.height
     }
     
     var top:CGFloat {
-        return self.frame.origin.y
+        return frame.origin.y
     }
     
     var bottom:CGFloat {
-        return self.frame.size.height+self.frame.origin.y
+        return frame.size.height+frame.origin.y
     }
     
     var left:CGFloat {
@@ -30,11 +30,11 @@ extension UIView {
     }
     
     var right:CGFloat {
-        return self.frame.size.width+self.frame.origin.x
+        return frame.size.width+frame.origin.x
     }
     
     func addSubviews(_ views:UIView...) {
-        views.forEach({self.addSubview($0)})
+        views.forEach({addSubview($0)})
     }
     
 }

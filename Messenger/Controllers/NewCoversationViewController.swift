@@ -8,7 +8,7 @@
 import UIKit
 import JGProgressHUD
 
-class NewCoversationViewController: UIViewController {
+final class NewCoversationViewController: UIViewController {
 
     public var completion:((SearchResult) -> ())?
     
@@ -174,8 +174,3 @@ extension NewCoversationViewController:UISearchBarDelegate {
     
 }
 
-
-struct SearchResult {
-    let name:String
-    let email:String
-}

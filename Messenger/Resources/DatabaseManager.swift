@@ -15,9 +15,13 @@ enum DatabaseError:Error {
 }
 
 
+/// Manager object to read and write to realtime database in Firebase
 final class DatabaseManager {
     
+    /// Shared instance of class
     static let shared = DatabaseManager()
+    
+    private init() {}
     
     private let database = Database.database().reference()
     
@@ -29,6 +33,7 @@ final class DatabaseManager {
 
 extension DatabaseManager {
     
+    /// Returns the data at a specified child node,if exists
     public func getDataFor( path:String, completion: @escaping (Result<Any,Error>)->Void) {
         database.child(path).observeSingleEvent(of: .value) { snapShot in
             guard let value = snapShot.value else {
@@ -43,6 +48,10 @@ extension DatabaseManager {
 //MARK: Account Managemnt
 extension DatabaseManager {
     
+    /// Checks if an user exists witha given email
+    /// - Parameters:
+    ///   - email:     email to be checked
+    ///   - completion: async closure to return the result
     public func userexists(with email:String,completion:@escaping ((Bool)->Void)) {
         var safeEmail = email.replacingOccurrences(of: ".", with: "_")
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "_")
@@ -61,7 +70,12 @@ extension DatabaseManager {
         database.child(user.safeEmail).setValue([
             "first_name":user.firstName,
             "last_name":user.lastName
-        ]) { error, _ in
+        ]) {[weak self] error, _ in
+            
+            guard let self else {
+                return
+            }
+            
             guard error == nil else {
                 print("Failed to write to database")
                 completion(false)
@@ -106,6 +120,7 @@ extension DatabaseManager {
         }
     }
     
+    /// Gets all users in database
     public func getAllUsers(completion:@escaping (Result<[[String:String]],Error>)->Void) {
         database.child("users").observeSingleEvent(of: .value) { snapShot in
             guard let users = snapShot.value as? [[String:String]] else {
@@ -482,9 +497,7 @@ extension DatabaseManager {
             completion(false)
             return
         }
-        
-        let currentUserEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
-        
+                
         // update new message to messages
         database.child("\(conversation)/messages").observeSingleEvent(of: .value) {[weak self] snapShot in
             guard let self else {
@@ -554,7 +567,6 @@ extension DatabaseManager {
                     return
                 }
             
-               // completion(true)
                 // update sender latest message
                 self.database.child("\(currentUserEmail)/conversations").observeSingleEvent(of: .value) { snapShot in
                     var databaseEntryConversations = [[String:Any]]()
@@ -566,7 +578,6 @@ extension DatabaseManager {
                     
                     if var currentUserConversations = snapShot.value as? [[String:Any]]  {
                         
-                        completion(false)
                         var index = 0
                         var targetConversation:[String:Any]?
 
@@ -695,7 +706,7 @@ extension DatabaseManager {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
         
         //Get all conversations for current user
-        database.child("\(safeEmail)/conversations").observeSingleEvent(of: .value) { snapShot in
+        database.child("\(safeEmail)/conversations").observeSingleEvent(of: .value) {[weak self] snapShot in
             if var conversations = snapShot.value as? [[String:Any]] {
                 
                 var indexToRemove = 0
@@ -712,7 +723,7 @@ extension DatabaseManager {
                 conversations.remove(at: indexToRemove)
                 
                 //reset the conversations for user in database
-                self.database.child("\(safeEmail)/conversations").setValue(conversations) { error, _ in
+                self?.database.child("\(safeEmail)/conversations").setValue(conversations) { error, _ in
                     guard error == nil else {
                         completion(false)
                         print("Failed to write new conversation array")

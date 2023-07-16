@@ -10,17 +10,9 @@ import FirebaseAuth
 import GoogleSignIn
 import SDWebImage
 
-enum ProfileViewModelType {
-    case info, logOut
-}
 
-struct ProfileViewModel {
-    let viewModelType:ProfileViewModelType
-    let title:String
-    let handler: (() -> ())?
-}
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
 
     @IBOutlet weak var tableView:UITableView!
     
@@ -107,10 +99,13 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource {
         
         sheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: {[weak self] _ in
             
+            UserDefaults.standard.set(nil, forKey: "email")
+            UserDefaults.standard.set(nil, forKey: "name")
             
             //Google Log Out
             GIDSignIn.sharedInstance.signOut()
             
+            //Firebase Log Out
             do {
                 try Auth.auth().signOut()
                 let vc = LoginViewController()
